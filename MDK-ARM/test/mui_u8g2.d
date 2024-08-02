@@ -1,0 +1,10 @@
+test\mui_u8g2.o: ..\u8g2\mui_u8g2.c
+test\mui_u8g2.o: ..\u8g2\mui.h
+test\mui_u8g2.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+test\mui_u8g2.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+test\mui_u8g2.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+test\mui_u8g2.o: ..\u8g2\u8g2.h
+test\mui_u8g2.o: ..\u8g2\u8x8.h
+test\mui_u8g2.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+test\mui_u8g2.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+test\mui_u8g2.o: ..\u8g2\mui_u8g2.h
