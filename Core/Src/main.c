@@ -116,7 +116,12 @@ int main(void)
 #endif
 
 	sgp30_init();
+  int displayN = 0;
+  int display_interval = 60;
 	sgp30_data_t sgp30_data;
+  uint32_t sgp30_data_co2 = 0; 
+  uint32_t sgp30_data_tvoc = 0;
+
 	dht11_data_t dht11Data;
 	
   /* USER CODE END 2 */
@@ -129,15 +134,23 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		//HAL_UART_Transmit(&huart1,(uint8_t *)"hello world!\r\n",14,HAL_MAX_DELAY);
-		// HAL_GPIO_TogglePin(DOG_GPIO_Port,DOG_Pin);
+		HAL_GPIO_TogglePin(DOG_GPIO_Port,DOG_Pin);
 		
-		sgp30_data = sgp30_read();
-		printf("co2=%d,tvoc=%d,",sgp30_data.co2,sgp30_data.tvoc);// ppm mg/m3, ppd mg/m3
+		sgp30_data_t sgp30_data_tmp = sgp30_read();
+		printf("co2=%d,tvoc=%d,",sgp30_data_tmp.co2,sgp30_data_tmp.tvoc);// ppm mg/m3, ppd mg/m3
+    sgp30_data_co2 += sgp30_data_tmp.co2;
+		sgp30_data_tvoc += sgp30_data_tmp.tvoc;
 		
 		dht11Data = DHT11_REC_Data();
 		printf("temp=%d.%d,tz=%d.%d",dht11Data.temp_H,dht11Data.temp_L,dht11Data.rh_H,dht11Data.rh_L);
 		printf("\r\n");
 		
+		displayN++;
+		
+		if(displayN == display_interval)
+		{
+      sgp30_data.co2 = sgp30_data_co2 / display_interval;
+			sgp30_data.tvoc = sgp30_data_tvoc / display_interval;
 #ifdef OLED_ENABLE		
 		myDraw_pic(&u8g2);
 		HAL_Delay(1000);
@@ -158,8 +171,12 @@ int main(void)
 		EPD_test_4in2bc();
 		#endif
 #endif
+      displayN = 0;
+      sgp30_data_co2 = 0;
+      sgp30_data_tvoc = 0;
+    }
 		
-		HAL_Delay(120000);
+		HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
